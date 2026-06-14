@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.github.csifinos.wsendpoint.WsEndpointApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-06-14T12:50:13.824Z" hostname="MacBookAir.homenet.telecomitalia.it" time="1.815">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.github.csifinos.wsendpoint.WsEndpointApplicationTests" time="0.39"/>
+  <system-out><![CDATA[14:50:13.917 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.github.csifinos.wsendpoint.WsEndpointApplicationTests]: WsEndpointApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:50:13.979 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.github.csifinos.wsendpoint.WsEndpointApplication for test class com.github.csifinos.wsendpoint.WsEndpointApplicationTests
+14:50:14.023 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.github.csifinos.wsendpoint.WsEndpointApplicationTests]: WsEndpointApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:50:14.023 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.github.csifinos.wsendpoint.WsEndpointApplication for test class com.github.csifinos.wsendpoint.WsEndpointApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-14T14:50:14.178+02:00  INFO 12562 --- [    Test worker] c.g.c.w.WsEndpointApplicationTests       : Starting WsEndpointApplicationTests using Java 25.0.3 with PID 12562 (started by christossifinos in /Users/christossifinos/Projects/springboot-mvc.ws-endpoint)
+2026-06-14T14:50:14.179+02:00  INFO 12562 --- [    Test worker] c.g.c.w.WsEndpointApplicationTests       : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T14:50:14.517+02:00  INFO 12562 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-06-14T14:50:14.519+02:00  INFO 12562 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-06-14T14:50:14.588+02:00  INFO 12562 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 3 Redis repository interfaces.
+2026-06-14T14:50:14.746+02:00  WARN 12562 --- [    Test worker] i.n.r.d.DnsServerAddressStreamProviders  : Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
+2026-06-14T14:50:15.238+02:00  INFO 12562 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-06-14T14:50:15.238+02:00  INFO 12562 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@75c77add]]
+2026-06-14T14:50:15.239+02:00  INFO 12562 --- [    Test worker] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-06-14T14:50:15.242+02:00  INFO 12562 --- [    Test worker] c.g.c.w.WsEndpointApplicationTests       : Started WsEndpointApplicationTests in 1.188 seconds (process running for 1.846)
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/christossifinos/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.8/f09415827a71be7ed621c7bd02550678f28bc81c/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>
