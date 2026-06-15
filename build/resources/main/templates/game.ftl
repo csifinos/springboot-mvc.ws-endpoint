@@ -29,6 +29,8 @@
 <div id="log"></div>
 
 <script>
+    const namespace = "${(namespace!'')?js_string}";
+    const instance = "${(instance!'')?js_string}";
     const wsSessionId = "${(wsSessionId!'')?js_string}";
     const brokerURL = "${(brokerUrl!'')?js_string}" + encodeURIComponent(wsSessionId);
     const reconnectDelay = "${(reconnectDelay!5000)?c}";
@@ -55,7 +57,7 @@
                 debug: (s) => append("[debug] " + s),
                 onConnect: () => {
                     append("Connected.");
-                    client.subscribe("/user/bonus", (message) => {
+                    client.subscribe(`/${namespace}/${instance}/${wsSessionId}/bonus`, (message) => {
                         const parsed = JSON.parse(message.body);
                         append("Bonus #" + parsed.sequence + " message: " + JSON.stringify(parsed.payload));
                     });

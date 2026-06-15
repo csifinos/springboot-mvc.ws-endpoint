@@ -1,7 +1,7 @@
 package com.github.csifinos.wsendpoint.bonus;
 
-import com.github.csifinos.wsendpoint.websocket.config.WsProperties;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import com.github.csifinos.wsendpoint.websocket.DestinationService;
+import com.github.csifinos.wsendpoint.websocket.pubsub.RedisPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -9,40 +9,24 @@ import java.util.UUID;
 @Service
 public class BonusService {
 
-    private final StringRedisTemplate redisTemplate;
-    private final SequenceCounterRepository sequenceCounterRepository;
-    private final BonusEventCodec bonusEventCodec;
-    private final WsProperties wsProperties;
+    private static final String BONUS_TOPIC = "bonus";
 
-    public BonusService(StringRedisTemplate redisTemplate,
-                        SequenceCounterRepository sequenceCounterRepository,
-                        BonusEventCodec bonusEventCodec,
-                        WsProperties wsProperties) {
-        this.redisTemplate = redisTemplate;
-        this.sequenceCounterRepository = sequenceCounterRepository;
-        this.bonusEventCodec = bonusEventCodec;
-        this.wsProperties = wsProperties;
+    private final RedisPublisher redisPublisher;
+    private final DestinationService destinationService;
+
+    public BonusService(RedisPublisher redisPublisher, DestinationService destinationService) {
+        this.redisPublisher = redisPublisher;
+        this.destinationService = destinationService;
     }
 
     public void sendBonusUpdateToSession(AssignBonusDto assignBonusDto, String wsSessionId) {
-        SequenceCounter counter = sequenceCounterRepository.findById(wsSessionId)
-                .orElse(new SequenceCounter(wsSessionId, 0L));
-        long sequence = counter.getValue() + 1;
-        counter.setValue(sequence);
-        sequenceCounterRepository.save(counter);
-
         BonusEvent event = new BonusEvent(
                 UUID.randomUUID().toString(),
                 wsSessionId,
-                sequence,
                 System.currentTimeMillis(),
                 assignBonusDto
         );
 
-//        try {
-//            redisTemplate.convertAndSend(wsProperties.getBonusChannel(), bonusEventCodec.encode(event));
-//        } catch (Exception ex) {
-//            throw new IllegalStateException("Failed to publish bonus event", ex);
-//        }
+        redisPublisher.publish(destinationService.constructDestination(wsSessionId, BONUS_TOPIC), event);
     }
 }

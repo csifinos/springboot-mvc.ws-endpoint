@@ -25,7 +25,7 @@ This project demonstrates a **WebSocket-first session model** where:
 3. Trigger a bonus for the same WS session
 
 ```bash
-WS_SESSION_ID="1e31817f-1267-45e7-8303-e1876e98f537"
+WS_SESSION_ID="69e4a836-cff0-47da-b86c-3a907287b5cb"
 
 curl -i -X POST "http://localhost:8080/v1/bonus?wsSessionId=${WS_SESSION_ID}" \
   -H "Content-Type: application/json" \
