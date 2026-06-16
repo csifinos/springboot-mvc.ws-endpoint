@@ -20,8 +20,8 @@ public class RedisPublisher {
         this.objectMapper = objectMapper;
     }
 
-    public void publish(String destination, Object payload) {
-        Message message = new Message(destination, payload);
+    public void publish(String destination, String sessionId, String topic, Object payload) {
+        Message message = new Message(destination, sessionId, topic, payload);
         String jsonMessage = objectMapper.writeValueAsString(message);
         redisTemplate.convertAndSend(CHANNEL_NAME, jsonMessage);
         LOGGER.info("Published message to Redis channel: destination={} payload={} at channel={}", destination, payload, CHANNEL_NAME);

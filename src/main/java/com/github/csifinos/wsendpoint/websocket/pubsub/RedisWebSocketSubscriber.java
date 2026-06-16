@@ -28,8 +28,9 @@ public class RedisWebSocketSubscriber {
         LOGGER.info("Received message from Redis channel: destination={} payload={}", msg.getDestination(), msg.getPayload());
 
         if (destinationService.isDestinationThisInstance(msg.getDestination())) {
-            messagingTemplate.convertAndSend(msg.getDestination(), msg.getPayload());
-            LOGGER.info("Broadcasted message to local clients: destination={} payload={}", msg.getDestination(), msg.getPayload());
+            messagingTemplate.convertAndSendToUser(msg.getSessionId(), msg.getTopic(), msg.getPayload());
+            LOGGER.info("Broadcasted message to websocket: sessionId={} topic={} payload={}",
+                    msg.getSessionId(), msg.getTopic(), msg.getPayload());
         }
     }
 }

@@ -12,12 +12,10 @@ import java.time.ZoneOffset;
 @Controller
 public class GameController {
 
-    private final PubSubProperties pubSubProperties;
     private final WsProperties wsProperties;
     private final GameService gameService;
 
-    public GameController(PubSubProperties pubSubProperties, WsProperties wsProperties, GameService gameService) {
-        this.pubSubProperties = pubSubProperties;
+    public GameController(WsProperties wsProperties, GameService gameService) {
         this.wsProperties = wsProperties;
         this.gameService = gameService;
     }
@@ -25,8 +23,6 @@ public class GameController {
     @GetMapping("/game")
     public String loadGame(Model model) {
         String wsSessionId = gameService.loadGame();
-        model.addAttribute("namespace", pubSubProperties.getNamespace());
-        model.addAttribute("instance", pubSubProperties.getInstance());
         model.addAttribute("wsSessionId", wsSessionId);
         model.addAttribute("brokerUrl", wsProperties.getBrokerURL());
         model.addAttribute("reconnectDelay", wsProperties.getReconnectDelay().toMillis());

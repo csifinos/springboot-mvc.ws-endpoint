@@ -22,11 +22,10 @@ public class BonusService {
     public void sendBonusUpdateToSession(AssignBonusDto assignBonusDto, String wsSessionId) {
         BonusEvent event = new BonusEvent(
                 UUID.randomUUID().toString(),
-                wsSessionId,
                 System.currentTimeMillis(),
                 assignBonusDto
         );
 
-        redisPublisher.publish(destinationService.constructDestination(wsSessionId, BONUS_TOPIC), event);
+        redisPublisher.publish(destinationService.getDestination(), wsSessionId, BONUS_TOPIC, event);
     }
 }

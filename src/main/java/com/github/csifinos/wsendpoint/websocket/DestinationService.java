@@ -7,25 +7,21 @@ import org.springframework.util.AntPathMatcher;
 @Service
 public class DestinationService {
 
-    private static final String DESTINATION_PATTERN = "/%s/%s/%s/%s";
+    private static final String DESTINATION_PATTERN = "/%s/%s";
     private static final AntPathMatcher MATCHER = new AntPathMatcher();
 
-    private final PubSubProperties pubSubProperties;
+    private final String destination;
 
     public DestinationService(PubSubProperties pubSubProperties) {
-        this.pubSubProperties = pubSubProperties;
+        this.destination = String.format(DESTINATION_PATTERN,
+                pubSubProperties.getNamespace(), pubSubProperties.getInstance());
     }
 
-    public String constructDestination(String wsSessionId, String topic) {
-        return String.format(DESTINATION_PATTERN,
-                pubSubProperties.getNamespace(), pubSubProperties.getInstance(),
-                wsSessionId, topic);
+    public String getDestination() {
+        return destination;
     }
 
     public boolean isDestinationThisInstance(String destination) {
-        String currentDestination = String.format(DESTINATION_PATTERN,
-                pubSubProperties.getNamespace(), pubSubProperties.getInstance(),
-                "*", "*");
-        return MATCHER.match(currentDestination, destination);
+        return MATCHER.match(this.destination, destination);
     }
 }
