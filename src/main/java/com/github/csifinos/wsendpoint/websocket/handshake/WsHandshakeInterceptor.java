@@ -1,6 +1,6 @@
 package com.github.csifinos.wsendpoint.websocket.handshake;
 
-import com.github.csifinos.wsendpoint.websocket.session.SessionService;
+import com.github.csifinos.wsendpoint.websocket.session.WsSessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
@@ -18,10 +18,10 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(WsHandshakeInterceptor.class);
 
-    private final SessionService sessionService;
+    private final WsSessionService wsSessionService;
 
-    public WsHandshakeInterceptor(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public WsHandshakeInterceptor(WsSessionService wsSessionService) {
+        this.wsSessionService = wsSessionService;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
         }
 
         String sessionId = servletRequest.getServletRequest().getParameter(WsHandshakeProperties.SESSION_PARAM);
-        if (!sessionService.isSessionValid(sessionId)) {
+        if (!wsSessionService.isSessionValid(sessionId)) {
             LOG.warn("Rejected websocket handshake: invalid sessionId {}", sessionId);
             return false;
         }

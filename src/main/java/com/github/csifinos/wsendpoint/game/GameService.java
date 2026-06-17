@@ -1,6 +1,6 @@
 package com.github.csifinos.wsendpoint.game;
 
-import com.github.csifinos.wsendpoint.websocket.session.SessionService;
+import com.github.csifinos.wsendpoint.websocket.session.WsSessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,15 +10,15 @@ public class GameService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
 
-    private final SessionService sessionService;
+    private final WsSessionService wsSessionService;
 
-    public GameService(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public GameService(WsSessionService wsSessionService) {
+        this.wsSessionService = wsSessionService;
     }
 
     public String loadGame() {
-        String sessionId = sessionService.issueSession();
-        LOGGER.info("Loading game for sessionId: {}", sessionId);
-        return sessionId;
+        String wsSession = wsSessionService.issueSession();
+        LOGGER.info("Loading game for wsSession: {}", wsSession);
+        return wsSession;
     }
 }

@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository("WsSessionRepository")
-public interface SessionRepository extends CrudRepository<Session, String> {
+public interface WsSessionRepository extends CrudRepository<WsSession, String> {
 }
 

@@ -6,8 +6,8 @@ import org.springframework.data.redis.core.TimeToLive;
 
 import java.util.concurrent.TimeUnit;
 
-@RedisHash("Session")
-public class Session {
+@RedisHash("WsSession")
+public class WsSession {
 
     @Id
     private String id;
@@ -16,10 +16,10 @@ public class Session {
     @TimeToLive(unit = TimeUnit.SECONDS)
     private Long ttlSeconds;
 
-    public Session() {
+    public WsSession() {
     }
 
-    public Session(String id, String status, long ttlSeconds) {
+    public WsSession(String id, String status, long ttlSeconds) {
         this.id = id;
         this.status = status;
         this.ttlSeconds = ttlSeconds;
