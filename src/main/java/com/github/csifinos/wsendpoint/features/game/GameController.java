@@ -1,7 +1,6 @@
-package com.github.csifinos.wsendpoint.game;
+package com.github.csifinos.wsendpoint.features.game;
 
 import com.github.csifinos.wsendpoint.websocket.config.WsProperties;
-import com.github.csifinos.wsendpoint.websocket.pubsub.PubSubProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

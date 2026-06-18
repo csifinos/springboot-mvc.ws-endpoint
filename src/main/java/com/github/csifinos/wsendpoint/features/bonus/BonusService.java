@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.bonus;
+package com.github.csifinos.wsendpoint.features.bonus;
 
 import com.github.csifinos.wsendpoint.websocket.DestinationService;
 import com.github.csifinos.wsendpoint.websocket.pubsub.RedisPublisher;

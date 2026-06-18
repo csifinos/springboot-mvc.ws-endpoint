@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.bonus;
+package com.github.csifinos.wsendpoint.features.bonus;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

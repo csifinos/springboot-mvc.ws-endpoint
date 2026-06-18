@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.bonus;
+package com.github.csifinos.wsendpoint.features.bonus;
 
 public record BonusEvent(
         String messageId,

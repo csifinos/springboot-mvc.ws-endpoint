@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.game;
+package com.github.csifinos.wsendpoint.features.game;
 
 import com.github.csifinos.wsendpoint.websocket.session.WsSessionService;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.user;
+package com.github.csifinos.wsendpoint.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

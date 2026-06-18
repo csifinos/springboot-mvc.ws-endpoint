@@ -1,4 +1,4 @@
-package com.github.csifinos.wsendpoint.login;
+package com.github.csifinos.wsendpoint.features.login;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
