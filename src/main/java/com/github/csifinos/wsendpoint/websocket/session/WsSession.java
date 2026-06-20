@@ -11,17 +11,27 @@ public class WsSession {
 
     @Id
     private String id;
-    private String status;
-
+    private String userId;
     @TimeToLive(unit = TimeUnit.SECONDS)
     private Long ttlSeconds;
 
-    public WsSession() {
+    public WsSession() {}
+
+    public WsSession(String id, String userId, long ttlSeconds) {
+        this.id = id;
+        this.userId = userId;
+        this.ttlSeconds = ttlSeconds;
     }
 
-    public WsSession(String id, String status, long ttlSeconds) {
+    public void setId(String id) {
         this.id = id;
-        this.status = status;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setTtlSeconds(Long ttlSeconds) {
         this.ttlSeconds = ttlSeconds;
     }
 
@@ -29,24 +39,12 @@ public class WsSession {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public String getUserId() {
+        return userId;
     }
 
     public Long getTtlSeconds() {
         return ttlSeconds;
-    }
-
-    public void setTtlSeconds(Long ttlSeconds) {
-        this.ttlSeconds = ttlSeconds;
     }
 }
 

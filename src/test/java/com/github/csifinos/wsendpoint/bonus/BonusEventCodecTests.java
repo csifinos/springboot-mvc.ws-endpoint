@@ -1,7 +1,5 @@
 package com.github.csifinos.wsendpoint.bonus;
 
-import com.github.csifinos.wsendpoint.features.bonus.AssignBonusDto;
-import com.github.csifinos.wsendpoint.features.bonus.BonusEvent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

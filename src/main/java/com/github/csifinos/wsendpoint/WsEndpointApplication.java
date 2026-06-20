@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+//@EnableRedisIndexedHttpSession
 @EnableConfigurationProperties({WsProperties.class, PubSubProperties.class})
 public class WsEndpointApplication {
 
