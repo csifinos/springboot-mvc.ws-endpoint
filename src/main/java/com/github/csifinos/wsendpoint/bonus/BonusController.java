@@ -14,7 +14,7 @@ public class BonusController {
         this.bonusService = bonusService;
     }
 
-    @PostMapping("/v1/bonus")
+    @PostMapping("/api/v1/bonus")
     public void assignBonus(@RequestParam String wsSessionId,
                             @RequestBody AssignBonusDto assignBonusDto) {
         bonusService.sendBonusUpdateToSession(assignBonusDto, wsSessionId);

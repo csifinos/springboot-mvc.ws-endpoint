@@ -1,13 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>User Sessions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-<div class="container mt-4">
+<#import "layout.ftl" as l>
+<@l.base_layout>
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Active Sessions</h5>
@@ -45,10 +37,4 @@
             </div>
         </div>
     </div>
-
-    <footer class="text-center mt-4 text-muted small">
-        <p>Uses the <a href="https://lite.ip2location.com" class="text-decoration-none">IP2Location LITE database</a>.</p>
-    </footer>
-</div>
-</body>
-</html>
+</@l.base_layout>

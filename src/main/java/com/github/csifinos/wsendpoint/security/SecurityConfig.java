@@ -22,15 +22,25 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**").permitAll()
+                        .requestMatchers("/login", "/css/**", "/api/**").permitAll()
                         .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/game", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            // in case we destroy ws session here
+                        })
+                        .logoutSuccessUrl("/login?logout")
+                );
 
         return http.build();
     }
