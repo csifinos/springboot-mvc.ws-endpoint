@@ -1,51 +1,51 @@
 package com.github.csifinos.wsendpoint.websocket.config;
 
-import com.github.csifinos.wsendpoint.websocket.handshake.WsHandshakeHandler;
-import com.github.csifinos.wsendpoint.websocket.handshake.WsHandshakeInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.csifinos.wsendpoint.session.SessionService;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.stereotype.Component;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
-@Component
+@Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final WsHandshakeInterceptor wsHandshakeInterceptor;
-    private final WsHandshakeHandler wsHandshakeHandler;
+    private final SessionService sessionService;
     private final WsProperties wsProperties;
     private final ThreadPoolTaskScheduler brokerTaskScheduler;
 
-    public WebSocketMessageBrokerConfig(WsHandshakeInterceptor wsHandshakeInterceptor, WsHandshakeHandler wsHandshakeHandler,
-                                        WsProperties wsProperties,
+    public WebSocketMessageBrokerConfig(SessionService sessionService, WsProperties wsProperties,
                                         ThreadPoolTaskScheduler brokerTaskScheduler) {
-        this.wsHandshakeInterceptor = wsHandshakeInterceptor;
-        this.wsHandshakeHandler = wsHandshakeHandler;
+        this.sessionService = sessionService;
         this.wsProperties = wsProperties;
         this.brokerTaskScheduler = brokerTaskScheduler;
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/bonus")
+        registry.enableSimpleBroker("/queue")
                 .setTaskScheduler(brokerTaskScheduler)
                 .setHeartbeatValue(new long[]{
-                        wsProperties.getHeartbeatIncoming().toMillis()
-                        , wsProperties.getHeartbeatIncoming().toMillis()});
+                        wsProperties.getHeartbeatIncoming().toMillis(),
+                        wsProperties.getHeartbeatIncoming().toMillis()});
         registry.setApplicationDestinationPrefixes("/app");
         registry.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-endpoint")
+        registry.addEndpoint("/api/ws-endpoint")
                 .setAllowedOriginPatterns(wsProperties.getAllowedOrigins().toArray(String[]::new))
-                .addInterceptors(wsHandshakeInterceptor)
-                .setHandshakeHandler(wsHandshakeHandler);
+                .addInterceptors(new HttpSessionHandshakeInterceptor());
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new SessionValidationInterceptor(sessionService));
     }
 
 }

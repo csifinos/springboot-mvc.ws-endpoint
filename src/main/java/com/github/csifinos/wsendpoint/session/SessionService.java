@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -20,15 +21,16 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public UserSession getSessionBySessionId(String sessionId) {
-        Session session = sessionRepository.findById(sessionId);
+    public Optional<UserSession> getSessionBySessionId(String sessionId) {
+        return Optional.ofNullable(sessionRepository.findById(sessionId))
+                .map(session -> {
+                    String userId = session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
+                    SessionDetails sessionDetails = session.getAttribute(SessionConstants.SESSION_DETAILS);
 
-        String userId = session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
-        SessionDetails sessionDetails = session.getAttribute(SessionConstants.SESSION_DETAILS);
-
-        UserSession userSession = new UserSession(session.getId(), userId, sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
-        LOGGER.info("Retrieved session {}", userSession);
-        return userSession;
+                    UserSession userSession = new UserSession(session.getId(), userId, sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
+                    LOGGER.info("Retrieved session {}", userSession);
+                    return userSession;
+                });
     }
 
     public List<UserSession> getSessionByUserId(String userId) {

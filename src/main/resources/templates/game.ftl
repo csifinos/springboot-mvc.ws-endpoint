@@ -5,7 +5,6 @@
             <h5 class="mb-0">Game WebSocket Test</h5>
         </div>
         <div class="card-body">
-            <p>WS Session ID: <span class="badge bg-secondary" id="wsSessionId">${wsSessionId! "N/A"}</span></p>
             <div class="mb-3">
                 <button id="connectBtn" class="btn btn-success">Connect</button>
                 <button id="disconnectBtn" class="btn btn-danger">Disconnect</button>
@@ -17,8 +16,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.1.1/bundles/stomp.umd.min.js"></script>
     <script>
-        const wsSessionId = "${(wsSessionId!'')?js_string}";
-        const brokerURL = "${(brokerUrl!'')?js_string}" + encodeURIComponent(wsSessionId);
+        const brokerURL = "${(brokerUrl!'')?js_string}";
         const reconnectDelay = "${(reconnectDelay!5000)?c}";
         const heartbeatIncoming = "${(heartbeatIncoming!10000)?c}";
         const heartbeatOutgoing = "${(heartbeatOutgoing!10000)?c}";
@@ -43,7 +41,7 @@
                     debug: (s) => append("[debug] " + s),
                     onConnect: () => {
                         append("Connected.");
-                        client.subscribe(`/user/bonus`, (message) => {
+                        client.subscribe(`/user/queue/bonus`, (message) => {
                             const parsed = JSON.parse(message.body);
                             append("Bonus: message: " + JSON.stringify(parsed.payload));
                         });

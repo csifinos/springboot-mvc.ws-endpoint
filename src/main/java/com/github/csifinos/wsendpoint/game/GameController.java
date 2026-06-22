@@ -24,7 +24,6 @@ public class GameController {
     public String loadGame(Model model, HttpSession httpSession) {
         GameLoad gameLoad = gameService.loadGame(httpSession);
         model.addAttribute("userSession", gameLoad.userSession());
-        model.addAttribute("wsSessionId", gameLoad.wsSessionId());
         model.addAttribute("brokerUrl", wsProperties.getBrokerURL());
         model.addAttribute("reconnectDelay", wsProperties.getReconnectDelay().toMillis());
         model.addAttribute("heartbeatIncoming", wsProperties.getHeartbeatIncoming().toMillis());

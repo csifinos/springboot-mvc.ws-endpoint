@@ -18,10 +18,7 @@ public class GameService {
     }
 
     public GameLoad loadGame(HttpSession httpSession) {
-//        String wsSession = wsSessionService.issueSession();
-        GameLoad gameLoad = new GameLoad(
-                sessionService.getSessionBySessionId(httpSession.getId()),
-                null);
+        GameLoad gameLoad = new GameLoad(sessionService.getSessionBySessionId(httpSession.getId()).get());
         LOGGER.info("Loading game with details: {}", gameLoad);
         return gameLoad;
     }
