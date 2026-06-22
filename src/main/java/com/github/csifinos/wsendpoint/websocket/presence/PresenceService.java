@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PresenceService {
 
@@ -23,27 +25,42 @@ public class PresenceService {
         this.pubSubProperties = pubSubProperties;
     }
 
-    public void register(String sessionId, String simpSessionId) {
+    public void register(String userId, String simpSessionId) {
         long ttlSeconds = wsProperties.getPresenceTtl().getSeconds();
-        Presence record = new Presence(simpSessionId, sessionId, pubSubProperties.getInstance(), ttlSeconds);
-        presenceRepository.save(record);
-        LOGGER.info("Registered websocket presence: sessionId={} simpSessionId={} instanceId={} ttlSeconds={}",
-                sessionId, simpSessionId, record.getInstanceId(), ttlSeconds);
+        Presence presence = new Presence(userId, simpSessionId, pubSubProperties.getInstance(), ttlSeconds);
+        presenceRepository.save(presence);
+        LOGGER.info("Registered websocket presence: userId={} simpSessionId={} instanceId={} ttlSeconds={}",
+                userId, simpSessionId, presence.getInstanceId(), ttlSeconds);
     }
 
-    public void refresh(String simpSessionId) {
+    public void refresh(String userId) {
         // redis template is faster in this case
-        presenceRepository.findById(simpSessionId)
-                .ifPresent(record -> {
-                    record.setTtlSeconds(wsProperties.getPresenceTtl().getSeconds());
-                    presenceRepository.save(record);
-                    LOGGER.info("Refreshed websocket presence for simpSessionId={}: new ttlSeconds={}",
-                            simpSessionId, record.getTtlSeconds());
+        presenceRepository.findById(userId)
+                .ifPresent(presence -> {
+                    presence.setTtlSeconds(wsProperties.getPresenceTtl().getSeconds());
+                    presenceRepository.save(presence);
+                    LOGGER.info("Refreshed websocket presence for userId={}: new ttlSeconds={}",
+                            userId, presence.getTtlSeconds());
                 });
     }
 
-    public void remove(String simpSessionId) {
-        presenceRepository.deleteById(simpSessionId);
-        LOGGER.info("Removed websocket presence for simpSessionId={}", simpSessionId);
+    public void remove(String userId) {
+        presenceRepository.deleteById(userId);
+        LOGGER.info("Removed websocket presence for userId={}", userId);
+    }
+
+    public boolean containsPresence(String userId) {
+        boolean presence = presenceRepository.existsById(userId);
+        LOGGER.info("Checked presence for userId={}: exists={}", userId, presence);
+        return presence;
+    }
+
+    public boolean containsPresenceWithSimpSessionId(String userId,  String simpSessionId) {
+        return presenceRepository.findById(userId)
+                .map(presence -> simpSessionId.equals(presence.getSimpSessionId()))
+                .orElseThrow(() -> {
+                    LOGGER.info("Presence not found for userId=" + userId);
+                    return new IllegalStateException("Presence not found for userId=" + userId);
+                });
     }
 }

@@ -13,7 +13,6 @@ public class WsProperties {
     private Duration heartbeatIncoming;
     private Duration heartbeatOutgoing;
     private Duration reconnectDelay;
-    private Duration sessionTtl;
     private Duration presenceTtl;
     private Duration refreshInterval;
 
@@ -55,14 +54,6 @@ public class WsProperties {
 
     public void setReconnectDelay(Duration reconnectDelay) {
         this.reconnectDelay = reconnectDelay;
-    }
-
-    public Duration getSessionTtl() {
-        return sessionTtl;
-    }
-
-    public void setSessionTtl(Duration sessionTtl) {
-        this.sessionTtl = sessionTtl;
     }
 
     public Duration getPresenceTtl() {

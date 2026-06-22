@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit;
 public class Presence {
 
     @Id
+    private String userId;
     private String simpSessionId;
-    private String sessionId;
     private String instanceId;
 
     @TimeToLive(unit = TimeUnit.SECONDS)
@@ -20,11 +20,19 @@ public class Presence {
     public Presence() {
     }
 
-    public Presence(String simpSessionId, String sessionId, String instanceId, long ttlSeconds) {
+    public Presence(String userId, String simpSessionId, String instanceId, long ttlSeconds) {
+        this.userId = userId;
         this.simpSessionId = simpSessionId;
-        this.sessionId = sessionId;
         this.instanceId = instanceId;
         this.ttlSeconds = ttlSeconds;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getSimpSessionId() {
@@ -33,14 +41,6 @@ public class Presence {
 
     public void setSimpSessionId(String simpSessionId) {
         this.simpSessionId = simpSessionId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getInstanceId() {

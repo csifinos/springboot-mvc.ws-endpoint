@@ -1,6 +1,7 @@
 package com.github.csifinos.wsendpoint.websocket.config;
 
 import com.github.csifinos.wsendpoint.session.SessionService;
+import com.github.csifinos.wsendpoint.websocket.presence.PresenceService;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
@@ -16,9 +17,11 @@ import java.util.Map;
 public class SessionValidationInterceptor implements ChannelInterceptor {
 
     private final SessionService sessionService;
+    private final PresenceService presenceService;
 
-    public SessionValidationInterceptor(SessionService sessionService) {
+    public SessionValidationInterceptor(SessionService sessionService, PresenceService presenceService) {
         this.sessionService = sessionService;
+        this.presenceService = presenceService;
     }
 
     @Override
@@ -32,8 +35,10 @@ public class SessionValidationInterceptor implements ChannelInterceptor {
 
             if (httpSessionId == null ||
                     principal == null ||
-                    !sessionService.isUserOwnerOfSession(principal.getName(), httpSessionId)) {
-                throw new MessageDeliveryException("Unauthorized: Invalid Session or User.");
+                    !sessionService.isUserOwnerOfSession(principal.getName(), httpSessionId) ||
+                    !presenceService.containsPresence(principal.getName())
+            ) {
+                throw new MessageDeliveryException("Unauthorized: Invalid Session or User contains more than one ws.");
             }
         }
         return message;

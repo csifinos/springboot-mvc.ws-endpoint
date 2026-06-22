@@ -1,7 +1,6 @@
 package com.github.csifinos.wsendpoint.websocket;
 
 import com.github.csifinos.wsendpoint.websocket.presence.PresenceService;
-import com.github.csifinos.wsendpoint.websocket.session.WsSessionService;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +17,9 @@ public class HeartbeatController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HeartbeatController.class);
 
     private final PresenceService presenceService;
-    private final WsSessionService wsSessionService;
 
-    public HeartbeatController(PresenceService presenceService, WsSessionService wsSessionService) {
+    public HeartbeatController(PresenceService presenceService) {
         this.presenceService = presenceService;
-        this.wsSessionService = wsSessionService;
     }
 
     @MessageMapping("/heartbeat")
@@ -31,9 +28,8 @@ public class HeartbeatController {
             return;
         }
 
-        String sessionId = principal.getName();
-        presenceService.refresh(simpSessionId);
-        wsSessionService.refreshSession(sessionId);
-        LOGGER.info("Received heartbeat from sessionId={} simpSessionId={}", sessionId, simpSessionId);
+        String userId = principal.getName();
+        presenceService.refresh(userId);
+        LOGGER.info("Received heartbeat from userId={} simpSessionId={}", userId, simpSessionId);
     }
 }

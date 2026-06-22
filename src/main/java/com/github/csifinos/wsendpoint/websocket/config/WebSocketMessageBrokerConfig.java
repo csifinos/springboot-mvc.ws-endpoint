@@ -1,6 +1,7 @@
 package com.github.csifinos.wsendpoint.websocket.config;
 
 import com.github.csifinos.wsendpoint.session.SessionService;
+import com.github.csifinos.wsendpoint.websocket.presence.PresenceService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -15,12 +16,14 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfigurer {
 
     private final SessionService sessionService;
+    private final PresenceService presenceService;
     private final WsProperties wsProperties;
     private final ThreadPoolTaskScheduler brokerTaskScheduler;
 
-    public WebSocketMessageBrokerConfig(SessionService sessionService, WsProperties wsProperties,
+    public WebSocketMessageBrokerConfig(SessionService sessionService, PresenceService presenceService, WsProperties wsProperties,
                                         ThreadPoolTaskScheduler brokerTaskScheduler) {
         this.sessionService = sessionService;
+        this.presenceService = presenceService;
         this.wsProperties = wsProperties;
         this.brokerTaskScheduler = brokerTaskScheduler;
     }
@@ -45,7 +48,7 @@ public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfi
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new SessionValidationInterceptor(sessionService));
+        registration.interceptors(new SessionValidationInterceptor(sessionService, presenceService));
     }
 
 }
