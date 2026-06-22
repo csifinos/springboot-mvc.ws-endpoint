@@ -27,22 +27,23 @@ public class SessionValidationInterceptor implements ChannelInterceptor {
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 
-            Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
-            String httpSessionId = (sessionAttributes != null) ?
-                    (String) sessionAttributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME) : null;
-
+            String httpSessionId = extractHttpSessionId(accessor);
             Principal principal = accessor.getUser();
 
-            if (httpSessionId == null || principal == null || !isValid(httpSessionId, principal.getName())) {
+            if (httpSessionId == null ||
+                    principal == null ||
+                    !sessionService.isUserOwnerOfSession(principal.getName(), httpSessionId)) {
                 throw new MessageDeliveryException("Unauthorized: Invalid Session or User.");
             }
         }
         return message;
     }
 
-    private boolean isValid(String httpSessionId, String username) {
-        return sessionService.getSessionBySessionId(httpSessionId)
-                .map(userSession -> username.equals(userSession.userId()))
-                .orElse(false);
+    private String extractHttpSessionId(StompHeaderAccessor accessor) {
+        Map<String, Object> sessionAttributes = accessor.getSessionAttributes();
+        if (sessionAttributes == null) {
+            throw new MessageDeliveryException("Unauthorized: Invalid Session or User.");
+        }
+        return (String) sessionAttributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME);
     }
 }

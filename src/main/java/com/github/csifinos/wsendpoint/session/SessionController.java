@@ -25,7 +25,7 @@ public class SessionController {
                 .map(session -> {
                     UserSessionDto userSessionDto = new UserSessionDto();
                     userSessionDto.setSessionId(session.sessionId());
-                    userSessionDto.setUserId(session.userId());
+                    userSessionDto.setUserId(principal.getName());
                     userSessionDto.setLocation(session.sessionDetails().getLocation());
                     userSessionDto.setAccessType(session.sessionDetails().getAccessType());
                     userSessionDto.setCreationTime(session.creationTime(), request.getLocale());

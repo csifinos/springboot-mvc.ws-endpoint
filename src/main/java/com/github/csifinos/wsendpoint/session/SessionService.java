@@ -24,10 +24,9 @@ public class SessionService {
     public Optional<UserSession> getSessionBySessionId(String sessionId) {
         return Optional.ofNullable(sessionRepository.findById(sessionId))
                 .map(session -> {
-                    String userId = session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME);
                     SessionDetails sessionDetails = session.getAttribute(SessionConstants.SESSION_DETAILS);
 
-                    UserSession userSession = new UserSession(session.getId(), userId, sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
+                    UserSession userSession = new UserSession(session.getId(), sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
                     LOGGER.info("Retrieved session {}", userSession);
                     return userSession;
                 });
@@ -41,10 +40,16 @@ public class SessionService {
                 .stream()
                 .map(session -> {
                     SessionDetails sessionDetails = session.getAttribute(SessionConstants.SESSION_DETAILS);
-                    return new UserSession(session.getId(), userId, sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
+                    return new UserSession(session.getId(), sessionDetails, session.getCreationTime(), session.getLastAccessedTime());
                 }).toList();
 
         LOGGER.info("Retrieved sessions {}", userSessions);
         return userSessions;
+    }
+
+    public boolean isUserOwnerOfSession(String username, String httpSessionId) {
+        return getSessionByUserId(username)
+                .stream()
+                .anyMatch(userSession -> userSession.sessionId().equals(httpSessionId));
     }
 }

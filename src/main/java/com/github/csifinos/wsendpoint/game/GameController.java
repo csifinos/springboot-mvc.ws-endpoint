@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.time.ZoneOffset;
 
@@ -21,8 +22,8 @@ public class GameController {
     }
 
     @GetMapping("/game")
-    public String loadGame(Model model, HttpSession httpSession) {
-        GameLoad gameLoad = gameService.loadGame(httpSession);
+    public String loadGame(Model model, HttpSession httpSession, Principal principal) {
+        GameLoad gameLoad = gameService.loadGame(httpSession, principal);
         model.addAttribute("userSession", gameLoad.userSession());
         model.addAttribute("brokerUrl", wsProperties.getBrokerURL());
         model.addAttribute("reconnectDelay", wsProperties.getReconnectDelay().toMillis());
