@@ -22,7 +22,7 @@ public class HeartbeatController {
         this.presenceService = presenceService;
     }
 
-    @MessageMapping("/heartbeat")
+    @MessageMapping("/ws/heartbeat")
     public void heartbeat(Principal principal, @Header("simpSessionId") String simpSessionId) {
         if (Objects.isNull(principal) || Strings.isBlank(principal.getName()) || Strings.isBlank(simpSessionId)) {
             return;

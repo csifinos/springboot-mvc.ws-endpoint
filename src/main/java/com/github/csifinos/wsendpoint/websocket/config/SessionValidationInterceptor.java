@@ -32,14 +32,8 @@ public class SessionValidationInterceptor implements ChannelInterceptor {
 
             String httpSessionId = extractHttpSessionId(accessor);
             Principal principal = accessor.getUser();
-
-            if (httpSessionId == null ||
-                    principal == null ||
-                    !sessionService.isUserOwnerOfSession(principal.getName(), httpSessionId) ||
-                    !presenceService.containsPresence(principal.getName())
-            ) {
-                throw new MessageDeliveryException("Unauthorized: Invalid Session or User contains more than one ws.");
-            }
+            validateHttpSessionId(principal, httpSessionId);
+            validateIfHasAnotherWsSessionActive(principal);
         }
         return message;
     }
@@ -50,5 +44,17 @@ public class SessionValidationInterceptor implements ChannelInterceptor {
             throw new MessageDeliveryException("Unauthorized: Invalid Session or User.");
         }
         return (String) sessionAttributes.get(HttpSessionHandshakeInterceptor.HTTP_SESSION_ID_ATTR_NAME);
+    }
+
+    private void validateHttpSessionId(Principal principal, String httpSessionId) {
+        if (!sessionService.isUserOwnerOfSession(principal.getName(), httpSessionId)) {
+            throw new MessageDeliveryException("Unauthorized: Invalid Session or User contains more than one ws.");
+        }
+    }
+
+    private void validateIfHasAnotherWsSessionActive(Principal principal) {
+        if (presenceService.hasAPresence(principal.getName())) {
+            throw new MessageDeliveryException("User has another session active.");
+        }
     }
 }

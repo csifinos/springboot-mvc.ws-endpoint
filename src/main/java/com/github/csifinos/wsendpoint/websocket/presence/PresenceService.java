@@ -49,18 +49,9 @@ public class PresenceService {
         LOGGER.info("Removed websocket presence for userId={}", userId);
     }
 
-    public boolean containsPresence(String userId) {
+    public boolean hasAPresence(String userId) {
         boolean presence = presenceRepository.existsById(userId);
         LOGGER.info("Checked presence for userId={}: exists={}", userId, presence);
         return presence;
-    }
-
-    public boolean containsPresenceWithSimpSessionId(String userId,  String simpSessionId) {
-        return presenceRepository.findById(userId)
-                .map(presence -> simpSessionId.equals(presence.getSimpSessionId()))
-                .orElseThrow(() -> {
-                    LOGGER.info("Presence not found for userId=" + userId);
-                    return new IllegalStateException("Presence not found for userId=" + userId);
-                });
     }
 }
