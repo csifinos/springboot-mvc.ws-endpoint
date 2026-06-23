@@ -48,7 +48,9 @@ public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfi
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new SessionValidationInterceptor(sessionService, presenceService));
+        registration.interceptors(
+                new SessionValidationInterceptor(sessionService, presenceService),
+                new PresenceRefreshInterceptor(presenceService));
     }
 
 }
