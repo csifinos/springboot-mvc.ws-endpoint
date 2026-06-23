@@ -2,11 +2,10 @@
 
 This project demonstrates a **WebSocket-first session model** where:
 
-- Each `/game` load issues a stable `wsSessionId` stored in Redis.
-- WS handshake validates `wsSessionId` directly (no HTTP session required).
-- Presence is tracked per `wsSessionId` with TTL refresh via heartbeat.
-- Bonus messages are published via Redis pub/sub to specific `wsSessionId`.
-- No HTTP session overhead—session lifecycle is WebSocket-driven.
+- Each `/game` uses a HttpSession to communicate with the server.
+- WS handshake validates this `HttpSession` and the User that belongs it.
+- Presence is tracked per `simpSessionId` with TTL refresh via heartbeat.
+- Bonus messages are published via Redis pub/sub to specific `simplSessionId`.
 
 ## Quick start
 
@@ -19,21 +18,13 @@ This project demonstrates a **WebSocket-first session model** where:
 2. Open game page
 
 - `http://localhost:8080/game`
-- Note the `wsSessionId` displayed on the page.
 - Click `Connect` to open WebSocket.
 
-3. Trigger a bonus for the same WS session
+3. Trigger a bonus for the same user
 
 ```bash
-WS_SESSION_ID="{ws-session-id}"
-
-curl -i -X POST "http://localhost:8080/v1/bonus?wsSessionId=${WS_SESSION_ID}" \
+curl -i -X POST "http://localhost:8080/v1/bonus" \
   -H "Content-Type: application/json" \
-  -d '{"playerId":"p1","bonusId":"b1"}'
+  -d '{"user":"user0","bonusId":"b1"}'
 ```
 
-5) Run tests
-
-```bash
-./gradlew test
-```

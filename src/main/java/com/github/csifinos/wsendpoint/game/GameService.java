@@ -22,7 +22,7 @@ public class GameService {
 
     public GameLoad loadGame(HttpSession httpSession, Principal principal) {
         UserSession userSession = sessionService.getSessionBySessionId(httpSession.getId())
-                .orElseThrow(() -> new RuntimeException("No session found"));
+                .orElseThrow(() -> new IllegalStateException("No session found"));
         GameLoad gameLoad = new GameLoad(userSession, principal.getName());
         LOGGER.info("Loading game with details: {}", gameLoad);
         return gameLoad;

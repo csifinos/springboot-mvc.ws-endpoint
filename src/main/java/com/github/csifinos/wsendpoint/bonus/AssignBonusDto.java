@@ -1,15 +1,15 @@
 package com.github.csifinos.wsendpoint.bonus;
 
 public class AssignBonusDto {
-    String playerId;
+    String userId;
     String bonusId;
 
-    public String getPlayerId() {
-        return playerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getBonusId() {

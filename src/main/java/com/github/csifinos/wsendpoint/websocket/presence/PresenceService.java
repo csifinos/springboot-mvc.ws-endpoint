@@ -49,6 +49,12 @@ public class PresenceService {
         LOGGER.info("Removed websocket presence for userId={}", userId);
     }
 
+    public Optional<Presence> find(String userId) {
+        Optional<Presence> presence = presenceRepository.findById(userId);
+        LOGGER.info("Find presence for userId={}:", userId);
+        return presence;
+    }
+
     public boolean hasAPresence(String userId) {
         boolean presence = presenceRepository.existsById(userId);
         LOGGER.info("Checked presence for userId={}: exists={}", userId, presence);
